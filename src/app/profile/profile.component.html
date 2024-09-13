@@ -1,0 +1,96 @@
+<div class="container-fluid bg-primary px-0 px-md-5 mb-5">
+    <div class="row align-items-center px-3">
+      <div class="col-lg-4 text-center text-lg-left" style="margin-right: 15%;">
+        <h1 class="display-3 font-weight-bold text-white">Profile</h1>
+  
+        <div class="d-flex">
+          <!-- Sidebar -->
+          <div class="col-md-3 bg-light p-3">
+            <button class="btn btn-outline-light mb-2 w-100" (click)="setSelectedMenu('account')">Account Information</button>
+            <button class="btn btn-outline-light w-100" (click)="setSelectedMenu('security')">Security Settings</button>
+          </div>
+          
+          <!-- Profile Content -->
+          <div class="col-md-9 bg-white p-4">
+            <div *ngIf="selectedMenu === 'account'">
+              <h2>Account Information</h2>
+              <form [formGroup]="accountForm" (ngSubmit)="handleAccountFinish()">
+                <div class="form-group">
+                  <label for="firstName" class="text-dark">First Name</label>
+                  <input id="firstName" formControlName="firstName" type="text" class="form-control" placeholder="First Name"/>
+                  <div *ngIf="accountForm.controls['firstName'].invalid && (accountForm.controls['firstName'].touched || accountForm.controls['firstName'].dirty)">
+                    <div *ngIf="accountForm.controls['firstName'].errors?.['required']" class="text-danger">First Name is required</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="lastName" class="text-dark">Last Name</label>
+                  <input id="lastName" formControlName="lastName" type="text" class="form-control" placeholder="Last Name"/>
+                  <div *ngIf="accountForm.controls['lastName'].invalid && (accountForm.controls['lastName'].touched || accountForm.controls['lastName'].dirty)">
+                    <div *ngIf="accountForm.controls['lastName'].errors?.['required']" class="text-danger">Last Name is required</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="email" class="text-dark">Email</label>
+                  <input id="email" formControlName="email" type="email" class="form-control" placeholder="Email"/>
+                  <div *ngIf="accountForm.controls['email'].invalid && (accountForm.controls['email'].touched || accountForm.controls['email'].dirty)">
+                    <div *ngIf="accountForm.controls['email'].errors?.['required']" class="text-danger">Email is required</div>
+                    <div *ngIf="accountForm.controls['email'].errors?.['email']" class="text-danger">Email is not valid</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="text-dark">Address</label>
+                  <input formControlName="address.street" type="text" class="form-control mb-2" placeholder="Street"/>
+                  <input formControlName="address.city" type="text" class="form-control mb-2" placeholder="City"/>
+                  <input formControlName="address.state" type="text" class="form-control mb-2" placeholder="State"/>
+                  <input formControlName="address.zipCode" type="text" class="form-control mb-2" placeholder="Zip Code"/>
+                  <input formControlName="address.country" type="text" class="form-control" placeholder="Country"/>
+                </div>
+                
+                <div class="form-group">
+                  <label for="photoProfile" class="text-dark">Profile Photo</label>
+                  <input id="photoProfile" type="file" class="form-control-file mb-2" (change)="handleFileChange($event)" />
+                  <button type="button" class="btn btn-primary" (click)="handleUploadProfilePicture()">Upload Photo</button>
+                </div>
+                
+                <button type="submit" class="btn btn-success" [disabled]="accountForm.invalid">Save</button>
+              </form>
+              <img *ngIf="userData?.path" [src]="userData?.path" alt="Profile Photo" class="img-fluid mt-3"/>
+            </div>
+  
+            <div *ngIf="selectedMenu === 'security'">
+              <h2>Security Settings</h2>
+              <form [formGroup]="securityForm" (ngSubmit)="handleSecurityFinish()">
+                <div class="form-group">
+                  <label for="currentPassword" class="text-dark">Current Password</label>
+                  <input id="currentPassword" type="password" formControlName="currentPassword" class="form-control" placeholder="Current Password"/>
+                  <div *ngIf="securityForm.controls['currentPassword'].invalid && (securityForm.controls['currentPassword'].touched || securityForm.controls['currentPassword'].dirty)">
+                    <div *ngIf="securityForm.controls['currentPassword'].errors?.['required']" class="text-danger">Current Password is required</div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="newPassword" class="text-dark">New Password</label>
+                  <input id="newPassword" type="password" formControlName="newPassword" class="form-control" placeholder="New Password"/>
+                  <div *ngIf="securityForm.controls['newPassword'].invalid && (securityForm.controls['newPassword'].touched || securityForm.controls['newPassword'].dirty)">
+                    <div *ngIf="securityForm.controls['newPassword'].errors?.['required']" class="text-danger">New Password is required</div>
+                    <div *ngIf="securityForm.controls['newPassword'].errors?.['minlength']" class="text-danger">New Password must be at least 6 characters</div>
+                  </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" [disabled]="securityForm.invalid">Change Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Optional Image or Additional Content -->
+      <div class="col-lg-6 text-center text-lg-right">
+        <img class="img-fluid mt-5" src="assets/img/header.png" alt=""/>
+      </div>
+    </div>
+  </div>
+  
